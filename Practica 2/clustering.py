@@ -112,7 +112,7 @@ for actual in algoritmos:
 
     sns.heatmap(centers, cmap="YlGnBu", annot=centers_desnormal, fmt='.3f')
 
-    '''
+    
     print("---------- Preparando el scatter matrix...")
     #se añade la asignación de clusters como columna a X
     X_kmeans = pd.concat([X, clusters], axis=1)
