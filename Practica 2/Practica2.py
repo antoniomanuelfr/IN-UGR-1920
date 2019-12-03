@@ -146,7 +146,7 @@ if __name__ == "__main__":
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    # generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+    generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
 
     # Se prueban parametros de dos de los algoritmos
 
