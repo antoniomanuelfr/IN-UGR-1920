@@ -1,29 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import time
+from math import floor
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
-
+import seaborn as sns
+import sklearn.base
 import sklearn.cluster as cluster
 from sklearn import metrics
-from sklearn import preprocessing
-# explicitly require this experimental feature
-from sklearn.experimental import enable_iterative_imputer  # noqa
-# now you can import normally from sklearn.impute
-from sklearn.impute import IterativeImputer
-import sklearn.neighbors
-
-"""
-imputo iterative imputer para imputar valores perdidos. Esta opcion esta en experimental; 
-https://scikit-learn.org/stable/modules/impute.html
-"""
-from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import IterativeImputer
-
-from math import floor
-import seaborn as sns
 
 
 def norm_to_zero_one(df):
@@ -33,17 +18,18 @@ def norm_to_zero_one(df):
 def generate_table(res):
     print("Algoritmo ; Tiempo; Calinski; Silhouette")
     for algoritmo in res:
-        print("{}; {}s; {}; {} ".format(algoritmo, res[algoritmo][1], res[algoritmo][2], res[algoritmo][3]))
+        print("{}; {:.2f} s; {:.2f}; {:.2f}".format(algoritmo, res[algoritmo][1], res[algoritmo][2], res[algoritmo][3]))
 
 
-def exec_case(x_normal, algorithms):
-    result = {'K Means': [], 'Mean Shift': []}
+def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
+    result = {}
+    for alg in algorithms:
+        result[alg[0]] = []
 
     for algorithm in algorithms:
         print('----- Ejecutando {}'.format(algorithm[0]))
 
         t = time.time()
-
         cluster_predict = algorithm[1].fit_predict(x_normal)
         tiempo = time.time() - t
 
@@ -73,56 +59,107 @@ def exec_case(x_normal, algorithms):
             print('%s: %5d (%5.2f%%)' % (num, i, 100 * i / len(clusters)))
 
         # Saco figuras
-        print("---------- Preparando el heat map...")
+        if plot_figs:
+            if algorithm[0] == 'Mean-Shift' or algorithm[0] == 'K-Means' or algorithm[0] == 'BIRCH':
+                print("---------- Preparando el heat map...")
 
-        centers = pd.DataFrame(algorithm[1].cluster_centers_, columns=list(x_normal))
-        centers_desnormal = centers.copy()
+                if algorithm[0] == 'BIRCH':
+                    cluster_centers = algorithm[1].subcluster_centers_
+                else:
+                    cluster_centers = algorithm[1].cluster_centers_
+                centers = pd.DataFrame(cluster_centers, columns=list(x_normal))
 
-        # se convierten los centros a los rangos originales antes de normalizar
-        for var in list(centers):
-            centers_desnormal[var] = x_normal[var].min() + centers[var] * (x_normal[var].max() - x_normal[var].min())
+                centers_desnormal = centers.copy()
 
-        sns_plot = sns.heatmap(centers, cmap="YlGnBu", annot=centers_desnormal, fmt='.3f').get_figure()
-        # sns_plot.savefig(algorithm[0] + "_heatmap.png")
-        plt.show()
+                # se convierten los centros a los rangos originales antes de normalizar
+                for var in list(centers):
+                    centers_desnormal[var] = x_normal[var].min() + centers[var] * (
+                            x_normal[var].max() - x_normal[var].min())
 
-        print("---------- Preparando el scatter matrix...")
-        # se añade la asignación de clusters como columna a x
-        x_kmeans = pd.concat([x_normal, clusters], axis=1)
-        sns.set()
-        variables = list(x_kmeans)
-        variables.remove('cluster')
-        sns_plot = sns.pairplot(x_kmeans, vars=variables, hue="cluster", palette='Paired', plot_kws={"s": 25},
-                                diag_kind="hist")  # en hue indicamos que la columna 'cluster' define los colores
-        sns_plot.fig.subplots_adjust(wspace=.03, hspace=.03)
-        # sns_plot.savefig(algorithm[0] + ".png")
-        plt.show()
-        print("")
-        # '''
-    generate_table(result)
+                sns_heatmap = sns.heatmap(centers, annot=centers_desnormal, fmt='.3f',
+                                          cbar_kws={"orientation": "horizontal"}) \
+                    .set_title(
+                    "Heat map using {}".format(algorithm[0])).get_figure()
+                plt.show()
+
+                if save_figs:
+                    sns_heatmap.savefig("Imagenes/{}_heatmap.png".format(algorithm[0]))
+
+            print("---------- Preparando el scatter matrix...")
+            # se añade la asignación de clusters como columna a x
+            x_kmeans = pd.concat([x_normal, clusters], axis=1)
+            sns.set()
+            variables = list(x_kmeans)
+            variables.remove('cluster')
+            sns_matrix = sns.pairplot(x_kmeans, vars=variables, hue="cluster", plot_kws={"s": 25},
+                                      diag_kind="hist")
+            sns_matrix.fig.suptitle("Scatter matrix using {}".format(algorithm[0]))
+            sns_matrix.fig.subplots_adjust(wspace=.03, hspace=.03)
+            plt.show()
+            print("")
+            # '''
+            print("---------- Preparando el dendograma...")
+
+            sns_clustermap = sns.clustermap(x_normal)
+
+            plt.show()
+            if save_figs:
+                sns_matrix.savefig("Imagenes/{}_sparse.png".format(algorithm[0]))
+                sns_clustermap.savefig("Imagenes/{}_cluster.png".format(algorithm[0]))
     return result
 
 
+def test_params(data, params, models, names):
+    test_algorithms = []
+    if len(params) != len(models) and len(params) != len(names):
+        exit(1)
+
+    for model_params, model, name in zip(params, models, names):
+        for param in model_params:
+            model.set_params(**param)
+            test_algorithms.append((name + str(param), sklearn.base.clone(model)))
+    return exec_case(data, test_algorithms, plot_figs=False)
+
+
 if __name__ == "__main__":
+    threads = -1
+    seed = 0
     censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
 
-    # Se pueden reemplazar los valores desconocidos por un número
-    # censo = censo.replace(np.NaN,0)
-
-    # O imputar, por ejemplo con la> media
-    k_means = cluster.KMeans(init='k-means++', n_clusters=5, n_init=5, n_jobs=10)
-    ms = cluster.MeanShift(n_jobs=10)
-    algoritmos = (('K Means', k_means), ('Mean Shift', ms))
+    algoritmos = (
+        ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
+        ('Mean-Shift', cluster.MeanShift(bandwidth=0.5, n_jobs=threads)),
+        ('DBSCAN', cluster.DBSCAN(eps=0.2, n_jobs=threads, )),
+        ('Hierarchical-Clustering', cluster.AgglomerativeClustering(n_clusters=3)),
+        ('BIRCH', cluster.Birch(threshold=0.3, n_clusters=3))
+    )
 
     for col in censo:
         censo[col].fillna(censo[col].mean(), inplace=True)
 
     # Caso 1
+    print("----------Ejecutando caso 1------")
     subset = censo.loc[(censo['EDAD'] > 19) & (censo['EDAD'] <= 30) & (censo['NHIJOS'] > 0)]
     # seleccionar casos
     # seleccionar variables de interés para clustering
-    usadas = ['INGRESOS', 'NTRABA', 'ESTUDIOSA', 'NDESEOHIJO', 'PCUIDADOHIJOS']
+    usadas = ['INGRESOS', 'NTRABA', 'NDESEOHIJO', 'NHIJOS']
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    exec_case(X_normal, algoritmos)
+    # generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+
+    # Se prueban parametros de dos de los algoritmos
+
+    generate_table(test_params(X_normal, [[{'n_clusters': 3}, {'n_clusters': 5}, {'n_clusters': 7}, {'n_clusters': 9}],
+                                          [{'n_clusters': 3, 'threshold': 0.3}, {'n_clusters': 3, 'threshold': 0.2},
+                                           {'n_clusters': 3, 'threshold': 0.1}, {'n_clusters': 5, 'threshold': 0.1}]],
+                               [cluster.KMeans(init='k-means++', n_jobs=threads, random_state=seed), cluster.Birch()],
+                               ['k-Means', 'Birch']))
+
+    # Caso 2
+
+    print("----------Ejecutando caso 2------")
+
+    # Caso 3
+
+    print("----------Ejecutando caso 3----")
