@@ -1,0 +1,317 @@
+----------Ejecutando caso 1------
+----- Ejecutando K-Means
+Tamaño de cada cluster usando K-Means :
+2:  1486 (36.61%)
+0:  1311 (32.30%)
+1:  1262 (31.09%)
+----- Ejecutando Mean-Shift
+Tamaño de cada cluster usando Mean-Shift :
+0:  3881 (95.61%)
+4:    79 ( 1.95%)
+3:    57 ( 1.40%)
+1:    35 ( 0.86%)
+2:     7 ( 0.17%)
+----- Ejecutando DBSCAN
+Tamaño de cada cluster usando DBSCAN :
+0:  4032 (99.33%)
+-1:    27 ( 0.67%)
+----- Ejecutando Hierarchical-Clustering
+Tamaño de cada cluster usando Hierarchical-Clustering :
+0:  1639 (40.38%)
+1:  1322 (32.57%)
+2:  1098 (27.05%)
+----- Ejecutando BIRCH
+Tamaño de cada cluster usando BIRCH :
+1:  1549 (38.16%)
+2:  1382 (34.05%)
+0:  1128 (27.79%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+K-Means; 1.43 s; 1578.10; 0.26
+Mean-Shift; 19.95 s; 93.91; 0.14
+DBSCAN; 0.23 s; 29.74; 0.40
+Hierarchical-Clustering; 0.55 s; 1264.14; 0.21
+BIRCH; 0.08 s; 1563.97; 0.26
+----- Ejecutando k-Means{'n_clusters': 4}
+Tamaño de cada cluster usando k-Means{'n_clusters': 4} :
+2:  1188 (29.27%)
+3:  1039 (25.60%)
+1:   920 (22.67%)
+0:   912 (22.47%)
+----- Ejecutando k-Means{'n_clusters': 5}
+Tamaño de cada cluster usando k-Means{'n_clusters': 5} :
+4:   918 (22.62%)
+3:   909 (22.39%)
+2:   875 (21.56%)
+0:   739 (18.21%)
+1:   618 (15.23%)
+----- Ejecutando k-Means{'n_clusters': 6}
+Tamaño de cada cluster usando k-Means{'n_clusters': 6} :
+4:   916 (22.57%)
+5:   794 (19.56%)
+1:   699 (17.22%)
+3:   657 (16.19%)
+2:   567 (13.97%)
+0:   426 (10.50%)
+----- Ejecutando k-Means{'n_clusters': 7}
+Tamaño de cada cluster usando k-Means{'n_clusters': 7} :
+1:   902 (22.22%)
+2:   681 (16.78%)
+0:   539 (13.28%)
+4:   526 (12.96%)
+3:   514 (12.66%)
+6:   506 (12.47%)
+5:   391 ( 9.63%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.25}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.25} :
+0:  2050 (50.51%)
+2:  1959 (48.26%)
+1:    50 ( 1.23%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.2}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.2} :
+0:  2999 (73.89%)
+2:  1023 (25.20%)
+1:    37 ( 0.91%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.1}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.1} :
+1:  2039 (50.23%)
+0:  1102 (27.15%)
+2:   918 (22.62%)
+----- Ejecutando Birch{'n_clusters': 5, 'threshold': 0.25}
+Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.25} :
+2:  1959 (48.26%)
+0:  1550 (38.19%)
+1:   500 (12.32%)
+3:    43 ( 1.06%)
+4:     7 ( 0.17%)
+----- Ejecutando Birch{'n_clusters': 5, 'threshold': 0.2}
+Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.2} :
+1:  2442 (60.16%)
+2:  1023 (25.20%)
+3:   372 ( 9.16%)
+4:   185 ( 4.56%)
+0:    37 ( 0.91%)
+----- Ejecutando Birch{'n_clusters': 5, 'threshold': 0.1}
+Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.1} :
+1:  1823 (44.91%)
+0:  1049 (25.84%)
+2:   918 (22.62%)
+4:   216 ( 5.32%)
+3:    53 ( 1.31%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+k-Means{'n_clusters': 4}; 0.06 s; 1420.34; 0.23
+k-Means{'n_clusters': 5}; 0.07 s; 1331.95; 0.22
+k-Means{'n_clusters': 6}; 0.10 s; 1245.82; 0.22
+k-Means{'n_clusters': 7}; 0.14 s; 1176.81; 0.22
+Birch{'n_clusters': 3, 'threshold': 0.25}; 0.08 s; 727.80; 0.21
+Birch{'n_clusters': 3, 'threshold': 0.2}; 0.08 s; 606.45; 0.20
+Birch{'n_clusters': 3, 'threshold': 0.1}; 0.17 s; 999.49; 0.17
+Birch{'n_clusters': 5, 'threshold': 0.25}; 0.08 s; 619.55; 0.19
+Birch{'n_clusters': 5, 'threshold': 0.2}; 0.08 s; 642.13; 0.15
+Birch{'n_clusters': 5, 'threshold': 0.1}; 0.22 s; 680.99; 0.14
+----- Ejecutando K-Means
+Tamaño de cada cluster usando K-Means :
+1:   285 (42.66%)
+2:   193 (28.89%)
+0:   190 (28.44%)
+----- Ejecutando Mean-Shift
+Tamaño de cada cluster usando Mean-Shift :
+0:   334 (50.00%)
+1:   330 (49.40%)
+2:     4 ( 0.60%)
+----- Ejecutando DBSCAN
+Tamaño de cada cluster usando DBSCAN :
+0:   300 (44.91%)
+-1:   245 (36.68%)
+2:    72 (10.78%)
+1:    25 ( 3.74%)
+3:    11 ( 1.65%)
+6:     5 ( 0.75%)
+5:     5 ( 0.75%)
+4:     5 ( 0.75%)
+----- Ejecutando Hierarchical-Clustering
+Tamaño de cada cluster usando Hierarchical-Clustering :
+0:   280 (41.92%)
+2:   155 (23.20%)
+1:   136 (20.36%)
+3:    97 (14.52%)
+----- Ejecutando BIRCH
+Tamaño de cada cluster usando BIRCH :
+0:   349 (52.25%)
+1:   208 (31.14%)
+2:   111 (16.62%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+K-Means; 0.02 s; 306.90; 0.29
+Mean-Shift; 1.44 s; 134.76; 0.25
+DBSCAN; 0.12 s; 9.65; -0.30
+Hierarchical-Clustering; 0.01 s; 264.45; 0.26
+BIRCH; 0.04 s; 244.43; 0.24
+----- Ejecutando Hierarchical-Clustering{'n_clusters': 3}
+Tamaño de cada cluster usando Hierarchical-Clustering{'n_clusters': 3} :
+0:   377 (56.44%)
+2:   155 (23.20%)
+1:   136 (20.36%)
+----- Ejecutando Hierarchical-Clustering{'n_clusters': 5}
+Tamaño de cada cluster usando Hierarchical-Clustering{'n_clusters': 5} :
+1:   225 (33.68%)
+2:   155 (23.20%)
+0:   136 (20.36%)
+3:    97 (14.52%)
+4:    55 ( 8.23%)
+----- Ejecutando Hierarchical-Clustering{'n_clusters': 6}
+Tamaño de cada cluster usando Hierarchical-Clustering{'n_clusters': 6} :
+0:   225 (33.68%)
+2:   155 (23.20%)
+1:    97 (14.52%)
+3:    82 (12.28%)
+4:    55 ( 8.23%)
+5:    54 ( 8.08%)
+----- Ejecutando Hierarchical-Clustering{'n_clusters': 7}
+Tamaño de cada cluster usando Hierarchical-Clustering{'n_clusters': 7} :
+0:   155 (23.20%)
+6:   113 (16.92%)
+2:   112 (16.77%)
+1:    97 (14.52%)
+3:    82 (12.28%)
+4:    55 ( 8.23%)
+5:    54 ( 8.08%)
+----- Ejecutando BIRCH{'n_clusters': 3, 'threshold': 0.25}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 3, 'threshold': 0.25} :
+0:   422 (63.17%)
+2:   131 (19.61%)
+1:   115 (17.22%)
+----- Ejecutando BIRCH{'n_clusters': 3, 'threshold': 0.2}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 3, 'threshold': 0.2} :
+0:   399 (59.73%)
+2:   136 (20.36%)
+1:   133 (19.91%)
+----- Ejecutando BIRCH{'n_clusters': 3, 'threshold': 0.15}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 3, 'threshold': 0.15} :
+2:   343 (51.35%)
+0:   176 (26.35%)
+1:   149 (22.31%)
+----- Ejecutando BIRCH{'n_clusters': 5, 'threshold': 0.25}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 5, 'threshold': 0.25} :
+0:   257 (38.47%)
+3:   165 (24.70%)
+2:   131 (19.61%)
+4:    77 (11.53%)
+1:    38 ( 5.69%)
+----- Ejecutando BIRCH{'n_clusters': 5, 'threshold': 0.2}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 5, 'threshold': 0.2} :
+0:   228 (34.13%)
+1:   171 (25.60%)
+2:   136 (20.36%)
+4:    80 (11.98%)
+3:    53 ( 7.93%)
+----- Ejecutando BIRCH{'n_clusters': 5, 'threshold': 0.1}
+Tamaño de cada cluster usando BIRCH{'n_clusters': 5, 'threshold': 0.1} :
+1:   189 (28.29%)
+0:   160 (23.95%)
+3:   145 (21.71%)
+2:   111 (16.62%)
+4:    63 ( 9.43%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+Hierarchical-Clustering{'n_clusters': 3}; 0.01 s; 251.81; 0.25
+Hierarchical-Clustering{'n_clusters': 5}; 0.01 s; 229.71; 0.20
+Hierarchical-Clustering{'n_clusters': 6}; 0.01 s; 204.28; 0.18
+Hierarchical-Clustering{'n_clusters': 7}; 0.01 s; 186.40; 0.16
+BIRCH{'n_clusters': 3, 'threshold': 0.25}; 0.01 s; 205.58; 0.23
+BIRCH{'n_clusters': 3, 'threshold': 0.2}; 0.02 s; 218.02; 0.23
+BIRCH{'n_clusters': 3, 'threshold': 0.15}; 0.03 s; 245.40; 0.26
+BIRCH{'n_clusters': 5, 'threshold': 0.25}; 0.02 s; 201.46; 0.21
+BIRCH{'n_clusters': 5, 'threshold': 0.2}; 0.02 s; 222.21; 0.22
+BIRCH{'n_clusters': 5, 'threshold': 0.1}; 0.03 s; 202.87; 0.17
+----- Ejecutando K-Means
+Tamaño de cada cluster usando K-Means :
+2:  1129 (39.46%)
+1:   922 (32.23%)
+0:   810 (28.31%)
+----- Ejecutando Mean-Shift
+Tamaño de cada cluster usando Mean-Shift :
+0:  2815 (98.39%)
+1:    29 ( 1.01%)
+2:    17 ( 0.59%)
+----- Ejecutando DBSCAN
+Tamaño de cada cluster usando DBSCAN :
+0:  2707 (94.62%)
+-1:   150 ( 5.24%)
+1:     4 ( 0.14%)
+----- Ejecutando Hierarchical-Clustering
+Tamaño de cada cluster usando Hierarchical-Clustering :
+1:  1225 (42.82%)
+2:   852 (29.78%)
+0:   784 (27.40%)
+----- Ejecutando BIRCH
+Tamaño de cada cluster usando BIRCH :
+2:  1517 (53.02%)
+0:  1080 (37.75%)
+1:   264 ( 9.23%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+K-Means; 0.03 s; 1570.29; 0.25
+Mean-Shift; 11.15 s; 36.53; 0.25
+DBSCAN; 0.11 s; 34.55; -0.03
+Hierarchical-Clustering; 0.26 s; 1367.62; 0.24
+BIRCH; 0.07 s; 1222.96; 0.27
+----- Ejecutando k-Means{'n_clusters': 3}
+Tamaño de cada cluster usando k-Means{'n_clusters': 3} :
+2:  1129 (39.46%)
+1:   922 (32.23%)
+0:   810 (28.31%)
+----- Ejecutando k-Means{'n_clusters': 5}
+Tamaño de cada cluster usando k-Means{'n_clusters': 5} :
+3:   735 (25.69%)
+0:   634 (22.16%)
+1:   627 (21.92%)
+4:   526 (18.39%)
+2:   339 (11.85%)
+----- Ejecutando k-Means{'n_clusters': 7}
+Tamaño de cada cluster usando k-Means{'n_clusters': 7} :
+4:   543 (18.98%)
+3:   452 (15.80%)
+2:   451 (15.76%)
+1:   445 (15.55%)
+6:   375 (13.11%)
+5:   340 (11.88%)
+0:   255 ( 8.91%)
+----- Ejecutando k-Means{'n_clusters': 9}
+Tamaño de cada cluster usando k-Means{'n_clusters': 9} :
+1:   388 (13.56%)
+6:   378 (13.21%)
+2:   378 (13.21%)
+5:   338 (11.81%)
+0:   320 (11.18%)
+4:   305 (10.66%)
+7:   283 ( 9.89%)
+3:   272 ( 9.51%)
+8:   199 ( 6.96%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.2}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.2} :
+2:  1517 (53.02%)
+0:  1080 (37.75%)
+1:   264 ( 9.23%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.25}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.25} :
+1:  1867 (65.26%)
+0:   942 (32.93%)
+2:    52 ( 1.82%)
+----- Ejecutando Birch{'n_clusters': 3, 'threshold': 0.1}
+Tamaño de cada cluster usando Birch{'n_clusters': 3, 'threshold': 0.1} :
+2:  1231 (43.03%)
+1:   896 (31.32%)
+0:   734 (25.66%)
+----- Ejecutando Birch{'n_clusters': 5, 'threshold': 0.1}
+Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.1} :
+1:   896 (31.32%)
+2:   762 (26.63%)
+0:   681 (23.80%)
+4:   469 (16.39%)
+3:    53 ( 1.85%)
+Algoritmo ; Tiempo; Calinski; Silhouette
+k-Means{'n_clusters': 3}; 0.03 s; 1570.29; 0.25
+k-Means{'n_clusters': 5}; 0.06 s; 1272.99; 0.23
+k-Means{'n_clusters': 7}; 0.09 s; 1030.14; 0.20
+k-Means{'n_clusters': 9}; 0.09 s; 900.25; 0.19
+Birch{'n_clusters': 3, 'threshold': 0.2}; 0.08 s; 1222.96; 0.27
+Birch{'n_clusters': 3, 'threshold': 0.25}; 0.06 s; 851.15; 0.23
+Birch{'n_clusters': 3, 'threshold': 0.1}; 0.16 s; 1179.86; 0.23
+Birch{'n_clusters': 5, 'threshold': 0.1}; 0.13 s; 897.50; 0.20

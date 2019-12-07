@@ -153,7 +153,7 @@ if __name__ == "__main__":
     seed = 0
     cnt = 1
     p_figs = True
-    s_figs = True
+    s_figs = False
     censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
