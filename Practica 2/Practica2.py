@@ -44,6 +44,7 @@ def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
 
     """
     result = {}
+    global cnt
     for alg in algorithms:
         result[alg[0]] = []
 
@@ -150,8 +151,10 @@ def test_params(data, params, models, names):
 if __name__ == "__main__":
     threads = -1
     seed = 0
-    censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
     cnt = 1
+    p_figs = True
+    s_figs = True
+    censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
         ('Mean-Shift', cluster.MeanShift(bandwidth=0.3, n_jobs=threads)),
@@ -164,16 +167,16 @@ if __name__ == "__main__":
         censo[col].fillna(censo[col].mean(), inplace=True)
 
     # Caso 1
-    #"""
+    # """
     print("----------Ejecutando caso 1------")
-    subset = censo.loc[(censo['NHIJOS'] > 1) &(censo['EC'] == 2) & (censo['NAC'] == 1)]
+    subset = censo.loc[(censo['NHIJOS'] > 1) & (censo['EC'] == 2) & (censo['NAC'] == 1)]
     # seleccionar casos
     # seleccionar variables de interés para clustering
     usadas = ['EDAD', 'NHIJOS', 'EDADHIJO1', 'EDEMANCIPA', 'INGRESOS']
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
 
@@ -184,9 +187,9 @@ if __name__ == "__main__":
                                            ]],
                                [cluster.KMeans(init='k-means++', n_jobs=threads, random_state=seed), cluster.Birch()],
                                ['k-Means', 'Birch']))
-    #"""
+    # """
     # Caso 2
-    #"""
+    # """
     cnt = 2
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
@@ -198,11 +201,11 @@ if __name__ == "__main__":
     subset = censo.loc[(censo['INTENTOEMB'] == 1)]
     # seleccionar casos
     # seleccionar variables de interés para clustering
-    usadas = ['NDESEOHIJO', 'ESTUDIOSA', 'TEMPRELA', 'EDAD','MAMPRIMHIJO']
+    usadas = ['NDESEOHIJO', 'ESTUDIOSA', 'TEMPRELA', 'EDAD', 'MAMPRIMHIJO']
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
 
@@ -213,29 +216,29 @@ if __name__ == "__main__":
                                            ]],
                                [cluster.AgglomerativeClustering(), cluster.Birch()],
                                ['Hierarchical-Clustering', 'BIRCH']))
-    #"""
+    # """
     # Caso 3
-    """
-    cnt=3
+    # """
+    cnt = 3
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
-        ('Mean-Shift', cluster.MeanShift(bandwidth=0.2, n_jobs=threads)),
-        ('DBSCAN', cluster.DBSCAN(eps=0.1, n_jobs=threads, )),
+        ('Mean-Shift', cluster.MeanShift(bandwidth=0.4, n_jobs=threads)),
+        ('DBSCAN', cluster.DBSCAN(eps=0.15, n_jobs=threads)),
         ('Hierarchical-Clustering', cluster.AgglomerativeClustering(n_clusters=3)),
-        ('BIRCH', cluster.Birch(threshold=0.1, n_clusters=4))
+        ('BIRCH', cluster.Birch(threshold=0.2, n_clusters=3))
     )
 
-    subset = censo.loc[(censo['EDAD'] < 35) ]
+    subset = censo.loc[(censo['EDAD'] < 30) & (censo['NHIJOS'] == 0)]
     # seleccionar casos
     # seleccionar variables de interés para clustering
-    usadas = ['', '', '', '']
+    usadas = ['NHERM', 'MAMPRIMHIJO', 'NDESEOHIJO', 'EDAD', 'ESTUDIOSA']
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
-    
+
     generate_table(test_params(X_normal, [[{'n_clusters': 3}, {'n_clusters': 5}, {'n_clusters': 7}, {'n_clusters': 9}],
                                           [{'n_clusters': 3, 'threshold': 0.2}, {'n_clusters': 3, 'threshold': 0.25},
                                            {'n_clusters': 3, 'threshold': 0.1}, {'n_clusters': 5, 'threshold': 0.1}]],
