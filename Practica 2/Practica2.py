@@ -60,7 +60,7 @@ def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
 
         # Saco figuras
         if plot_figs:
-            if algorithm[0] == 'Mean-Shift' or algorithm[0] == 'K-Means' :
+            if algorithm[0] == 'Mean-Shift' or algorithm[0] == 'K-Means':
                 print("---------- Preparando el heat map...")
 
                 cluster_centers = algorithm[1].cluster_centers_
@@ -80,7 +80,7 @@ def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
                 plt.show()
 
                 if save_figs:
-                    sns_heatmap.savefig("Imagenes/{}_heatmap.png".format(algorithm[0]))
+                    sns_heatmap.savefig("Imagenes/{}_heatmap_{}.png".format(algorithm[0], cnt))
 
             print("---------- Preparando el scatter matrix...")
             # se añade la asignación de clusters como columna a x
@@ -97,7 +97,7 @@ def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
 
             plt.show()
             if save_figs:
-                sns_matrix.savefig("Imagenes/{}_sparse.png".format(algorithm[0]))
+                sns_matrix.savefig("Imagenes/{}_sparse_{}.png".format(algorithm[0], cnt))
     return result
 
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     threads = -1
     seed = 0
     censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
-
+    cnt = 1
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
         ('Mean-Shift', cluster.MeanShift(bandwidth=0.5, n_jobs=threads)),
@@ -148,19 +148,21 @@ if __name__ == "__main__":
                                            {'n_clusters': 3, 'threshold': 0.1}, {'n_clusters': 5, 'threshold': 0.1}]],
                                [cluster.KMeans(init='k-means++', n_jobs=threads, random_state=seed), cluster.Birch()],
                                ['k-Means', 'Birch']))
+    #"""
     """
     # Caso 2
+    cnt = 2
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
-        ('Mean-Shift', cluster.MeanShift(bandwidth=0.2, n_jobs=threads)),
-        ('DBSCAN', cluster.DBSCAN(eps=0.1, n_jobs=threads, )),
+        ('Mean-Shift', cluster.MeanShift(bandwidth=0.3, n_jobs=threads)),
+        ('DBSCAN', cluster.DBSCAN(eps=0.2, n_jobs=threads)),
         ('Hierarchical-Clustering', cluster.AgglomerativeClustering(n_clusters=3)),
-        ('BIRCH', cluster.Birch(threshold=0.1, n_clusters=4))
+        ('BIRCH', cluster.Birch(threshold=0.15))
     )
-    subset = censo.loc[(censo['EMBACT'] == 1) or (censo)]
+    subset = censo.loc[(censo['INTENTOEMB'] == 1)]
     # seleccionar casos
     # seleccionar variables de interés para clustering
-    usadas = ['NHERMANOS', 'NHERMANAS', 'NDESEOHIJO', '']
+    usadas = ['NDESEOHIJO', 'ESTUDIOSA', 'TEMPRELA', 'EDAD']
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
@@ -168,10 +170,40 @@ if __name__ == "__main__":
 
     # Se prueban parametros de dos de los algoritmos
 
+    generate_table(test_params(X_normal, [[{'n_clusters': 4}, {'n_clusters': 5}, {'n_clusters': 6}, {'n_clusters': 7}],
+                                          [{'n_clusters': 3, 'threshold': 0.2}, {'n_clusters': 3, 'threshold': 0.25},
+                                           {'n_clusters': 3, 'threshold': 0.1}, {'n_clusters': 5, 'threshold': 0.1},
+                                           {'n_clusters': 5, 'threshold': 0.2}, {'n_clusters': 5, 'threshold': 0.25}
+
+                                           ]],
+                               [cluster.AgglomerativeClustering(), cluster.Birch()],
+                               ['Hierarchical-Clustering', 'BIRCH']))
+    """
+    # Caso 3
+    #"""
+    cnt=3
+    algoritmos = (
+        ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
+        ('Mean-Shift', cluster.MeanShift(bandwidth=0.2, n_jobs=threads)),
+        ('DBSCAN', cluster.DBSCAN(eps=0.1, n_jobs=threads, )),
+        ('Hierarchical-Clustering', cluster.AgglomerativeClustering(n_clusters=3)),
+        ('BIRCH', cluster.Birch(threshold=0.1, n_clusters=4))
+    )
+    subset = censo.loc[(censo['EDAD'] > 25) or (censo)]
+    # seleccionar casos
+    # seleccionar variables de interés para clustering
+    usadas = ['', '', '', '']
+    X = subset[usadas]
+    X_normal = X.apply(norm_to_zero_one)
+
+    generate_table(exec_case(X_normal, algoritmos, plot_figs=True, save_figs=False))
+
+    # Se prueban parametros de dos de los algoritmos
+    
     generate_table(test_params(X_normal, [[{'n_clusters': 3}, {'n_clusters': 5}, {'n_clusters': 7}, {'n_clusters': 9}],
                                           [{'n_clusters': 3, 'threshold': 0.2}, {'n_clusters': 3, 'threshold': 0.25},
                                            {'n_clusters': 3, 'threshold': 0.1}, {'n_clusters': 5, 'threshold': 0.1}]],
                                [cluster.KMeans(init='k-means++', n_jobs=threads, random_state=seed), cluster.Birch()],
                                ['k-Means', 'Birch']))
-    # Caso 3
-
+    """
+    #"""
