@@ -28,7 +28,7 @@ def generate_table(res):
         print("{}; {:.2f} s; {:.2f}; {:.2f}".format(algoritmo, res[algoritmo][1], res[algoritmo][2], res[algoritmo][3]))
 
 
-def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
+def exec_case(x_normal, algorithms, save_figs=False):
     """
     Función que ejecuta el caso de estudio que se va a usar.
     ----------
@@ -81,45 +81,44 @@ def exec_case(x_normal, algorithms, save_figs=False, plot_figs=False):
             print('%s: %5d (%5.2f%%)' % (num, i, 100 * i / len(clusters)))
 
         # Saco figuras
-        if plot_figs:
-            if algorithm[0] == 'Mean-Shift' or algorithm[0] == 'K-Means':
-                print("---------- Preparando el heat map...")
+        if algorithm[0] == 'Mean-Shift' or algorithm[0] == 'K-Means':
+            print("---------- Preparando el heat map...")
 
-                cluster_centers = algorithm[1].cluster_centers_
-                centers = pd.DataFrame(cluster_centers, columns=list(x_normal))
+            cluster_centers = algorithm[1].cluster_centers_
+            centers = pd.DataFrame(cluster_centers, columns=list(x_normal))
 
-                centers_desnormal = centers.copy()
+            centers_desnormal = centers.copy()
 
-                # se convierten los centros a los rangos originales antes de normalizar
-                for var in list(centers):
-                    centers_desnormal[var] = x_normal[var].min() + centers[var] * (
-                            x_normal[var].max() - x_normal[var].min())
+            # se convierten los centros a los rangos originales antes de normalizar
+            for var in list(centers):
+                centers_desnormal[var] = x_normal[var].min() + centers[var] * (
+                        x_normal[var].max() - x_normal[var].min())
 
-                sns_heatmap = sns.heatmap(centers, annot=centers_desnormal, fmt='.3f',
-                                          cbar_kws={"orientation": "horizontal"}) \
-                    .set_title(
-                    "Heat map using {}".format(algorithm[0])).get_figure()
-                plt.show()
-
-                if save_figs:
-                    sns_heatmap.savefig("Imagenes/{}_heatmap_{}.png".format(algorithm[0], cnt))
-
-            print("---------- Preparando el scatter matrix...")
-            # se añade la asignación de clusters como columna a x
-            x_kmeans = pd.concat([x_normal, clusters], axis=1)
-            sns.set()
-            variables = list(x_kmeans)
-            variables.remove('cluster')
-            sns_matrix = sns.pairplot(x_kmeans, vars=variables, hue="cluster", plot_kws={"s": 25},
-                                      diag_kind="hist")
-            sns_matrix.fig.suptitle("Scatter matrix using {}".format(algorithm[0]))
-            sns_matrix.fig.subplots_adjust(wspace=.03, hspace=.03)
+            sns_heatmap = sns.heatmap(centers, annot=centers_desnormal, fmt='.3f',
+                                      cbar_kws={"orientation": "horizontal"}) \
+                .set_title(
+                "Heat map using {}".format(algorithm[0])).get_figure()
             plt.show()
-            print("")
 
-            plt.show()
             if save_figs:
-                sns_matrix.savefig("Imagenes/{}_sparse_{}.png".format(algorithm[0], cnt))
+                sns_heatmap.savefig("Imagenes/{}_heatmap-{}.png".format(algorithm[0], cnt))
+
+        print("---------- Preparando el scatter matrix...")
+        # se añade la asignación de clusters como columna a x
+        x_kmeans = pd.concat([x_normal, clusters], axis=1)
+        sns.set()
+        variables = list(x_kmeans)
+        variables.remove('cluster')
+        sns_matrix = sns.pairplot(x_kmeans, vars=variables, hue="cluster", plot_kws={"s": 25},
+                                  diag_kind="hist")
+        sns_matrix.fig.suptitle("Scatter matrix using {}".format(algorithm[0]))
+        sns_matrix.fig.subplots_adjust(wspace=.03, hspace=.03)
+        plt.show()
+        print("")
+
+        plt.show()
+        if save_figs:
+            sns_matrix.savefig("Imagenes/{}-sparse-{}.png".format(algorithm[0], cnt))
     return result
 
 
@@ -145,7 +144,7 @@ def test_params(data, params, models, names):
         for param in model_params:
             model.set_params(**param)
             test_algorithms.append((name + str(param), sklearn.base.clone(model)))
-    return exec_case(data, test_algorithms, plot_figs=False)
+    return exec_case(data, test_algorithms)
 
 
 if __name__ == "__main__":
@@ -153,7 +152,8 @@ if __name__ == "__main__":
     seed = 0
     cnt = 1
     p_figs = True
-    s_figs = False
+
+    s_figs = True
     censo = pd.read_csv('mujeres_fecundidad_INE_2018.csv')
     algoritmos = (
         ('K-Means', cluster.KMeans(init='k-means++', n_clusters=3, n_jobs=threads, random_state=seed)),
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
+    generate_table(exec_case(X_normal, algoritmos, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
 
@@ -205,7 +205,7 @@ if __name__ == "__main__":
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
+    generate_table(exec_case(X_normal, algoritmos, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
 
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     X = subset[usadas]
     X_normal = X.apply(norm_to_zero_one)
 
-    generate_table(exec_case(X_normal, algoritmos, plot_figs=p_figs, save_figs=s_figs))
+    generate_table(exec_case(X_normal, algoritmos, save_figs=s_figs))
 
     # Se prueban parametros de dos de los algoritmos
 

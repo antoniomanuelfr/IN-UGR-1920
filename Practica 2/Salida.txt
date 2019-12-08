@@ -26,8 +26,8 @@ Tamaño de cada cluster usando BIRCH :
 2:  1382 (34.05%)
 0:  1128 (27.79%)
 Algoritmo ; Tiempo; Calinski; Silhouette
-K-Means; 1.43 s; 1578.10; 0.26
-Mean-Shift; 19.95 s; 93.91; 0.14
+K-Means; 1.45 s; 1578.10; 0.26
+Mean-Shift; 20.46 s; 93.91; 0.14
 DBSCAN; 0.23 s; 29.74; 0.40
 Hierarchical-Clustering; 0.55 s; 1264.14; 0.21
 BIRCH; 0.08 s; 1563.97; 0.26
@@ -98,16 +98,16 @@ Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.1} :
 4:   216 ( 5.32%)
 3:    53 ( 1.31%)
 Algoritmo ; Tiempo; Calinski; Silhouette
-k-Means{'n_clusters': 4}; 0.06 s; 1420.34; 0.23
-k-Means{'n_clusters': 5}; 0.07 s; 1331.95; 0.22
+k-Means{'n_clusters': 4}; 0.05 s; 1420.34; 0.23
+k-Means{'n_clusters': 5}; 0.09 s; 1331.95; 0.22
 k-Means{'n_clusters': 6}; 0.10 s; 1245.82; 0.22
-k-Means{'n_clusters': 7}; 0.14 s; 1176.81; 0.22
+k-Means{'n_clusters': 7}; 0.12 s; 1176.81; 0.22
 Birch{'n_clusters': 3, 'threshold': 0.25}; 0.08 s; 727.80; 0.21
 Birch{'n_clusters': 3, 'threshold': 0.2}; 0.08 s; 606.45; 0.20
-Birch{'n_clusters': 3, 'threshold': 0.1}; 0.17 s; 999.49; 0.17
+Birch{'n_clusters': 3, 'threshold': 0.1}; 0.18 s; 999.49; 0.17
 Birch{'n_clusters': 5, 'threshold': 0.25}; 0.08 s; 619.55; 0.19
 Birch{'n_clusters': 5, 'threshold': 0.2}; 0.08 s; 642.13; 0.15
-Birch{'n_clusters': 5, 'threshold': 0.1}; 0.22 s; 680.99; 0.14
+Birch{'n_clusters': 5, 'threshold': 0.1}; 0.17 s; 680.99; 0.14
 ----- Ejecutando K-Means
 Tamaño de cada cluster usando K-Means :
 1:   285 (42.66%)
@@ -141,10 +141,10 @@ Tamaño de cada cluster usando BIRCH :
 2:   111 (16.62%)
 Algoritmo ; Tiempo; Calinski; Silhouette
 K-Means; 0.02 s; 306.90; 0.29
-Mean-Shift; 1.44 s; 134.76; 0.25
-DBSCAN; 0.12 s; 9.65; -0.30
-Hierarchical-Clustering; 0.01 s; 264.45; 0.26
-BIRCH; 0.04 s; 244.43; 0.24
+Mean-Shift; 1.49 s; 134.76; 0.25
+DBSCAN; 0.11 s; 9.65; -0.30
+Hierarchical-Clustering; 0.02 s; 264.45; 0.26
+BIRCH; 0.05 s; 244.43; 0.24
 ----- Ejecutando Hierarchical-Clustering{'n_clusters': 3}
 Tamaño de cada cluster usando Hierarchical-Clustering{'n_clusters': 3} :
 0:   377 (56.44%)
@@ -211,16 +211,16 @@ Tamaño de cada cluster usando BIRCH{'n_clusters': 5, 'threshold': 0.1} :
 2:   111 (16.62%)
 4:    63 ( 9.43%)
 Algoritmo ; Tiempo; Calinski; Silhouette
-Hierarchical-Clustering{'n_clusters': 3}; 0.01 s; 251.81; 0.25
-Hierarchical-Clustering{'n_clusters': 5}; 0.01 s; 229.71; 0.20
-Hierarchical-Clustering{'n_clusters': 6}; 0.01 s; 204.28; 0.18
-Hierarchical-Clustering{'n_clusters': 7}; 0.01 s; 186.40; 0.16
-BIRCH{'n_clusters': 3, 'threshold': 0.25}; 0.01 s; 205.58; 0.23
-BIRCH{'n_clusters': 3, 'threshold': 0.2}; 0.02 s; 218.02; 0.23
-BIRCH{'n_clusters': 3, 'threshold': 0.15}; 0.03 s; 245.40; 0.26
+Hierarchical-Clustering{'n_clusters': 3}; 0.02 s; 251.81; 0.25
+Hierarchical-Clustering{'n_clusters': 5}; 0.02 s; 229.71; 0.20
+Hierarchical-Clustering{'n_clusters': 6}; 0.02 s; 204.28; 0.18
+Hierarchical-Clustering{'n_clusters': 7}; 0.02 s; 186.40; 0.16
+BIRCH{'n_clusters': 3, 'threshold': 0.25}; 0.02 s; 205.58; 0.23
+BIRCH{'n_clusters': 3, 'threshold': 0.2}; 0.03 s; 218.02; 0.23
+BIRCH{'n_clusters': 3, 'threshold': 0.15}; 0.05 s; 245.40; 0.26
 BIRCH{'n_clusters': 5, 'threshold': 0.25}; 0.02 s; 201.46; 0.21
-BIRCH{'n_clusters': 5, 'threshold': 0.2}; 0.02 s; 222.21; 0.22
-BIRCH{'n_clusters': 5, 'threshold': 0.1}; 0.03 s; 202.87; 0.17
+BIRCH{'n_clusters': 5, 'threshold': 0.2}; 0.03 s; 222.21; 0.22
+BIRCH{'n_clusters': 5, 'threshold': 0.1}; 0.04 s; 202.87; 0.17
 ----- Ejecutando K-Means
 Tamaño de cada cluster usando K-Means :
 2:  1129 (39.46%)
@@ -248,9 +248,9 @@ Tamaño de cada cluster usando BIRCH :
 1:   264 ( 9.23%)
 Algoritmo ; Tiempo; Calinski; Silhouette
 K-Means; 0.03 s; 1570.29; 0.25
-Mean-Shift; 11.15 s; 36.53; 0.25
-DBSCAN; 0.11 s; 34.55; -0.03
-Hierarchical-Clustering; 0.26 s; 1367.62; 0.24
+Mean-Shift; 10.99 s; 36.53; 0.25
+DBSCAN; 0.12 s; 34.55; -0.03
+Hierarchical-Clustering; 0.27 s; 1367.62; 0.24
 BIRCH; 0.07 s; 1222.96; 0.27
 ----- Ejecutando k-Means{'n_clusters': 3}
 Tamaño de cada cluster usando k-Means{'n_clusters': 3} :
@@ -307,11 +307,11 @@ Tamaño de cada cluster usando Birch{'n_clusters': 5, 'threshold': 0.1} :
 4:   469 (16.39%)
 3:    53 ( 1.85%)
 Algoritmo ; Tiempo; Calinski; Silhouette
-k-Means{'n_clusters': 3}; 0.03 s; 1570.29; 0.25
-k-Means{'n_clusters': 5}; 0.06 s; 1272.99; 0.23
-k-Means{'n_clusters': 7}; 0.09 s; 1030.14; 0.20
-k-Means{'n_clusters': 9}; 0.09 s; 900.25; 0.19
-Birch{'n_clusters': 3, 'threshold': 0.2}; 0.08 s; 1222.96; 0.27
-Birch{'n_clusters': 3, 'threshold': 0.25}; 0.06 s; 851.15; 0.23
-Birch{'n_clusters': 3, 'threshold': 0.1}; 0.16 s; 1179.86; 0.23
+k-Means{'n_clusters': 3}; 0.04 s; 1570.29; 0.25
+k-Means{'n_clusters': 5}; 0.07 s; 1272.99; 0.23
+k-Means{'n_clusters': 7}; 0.07 s; 1030.14; 0.20
+k-Means{'n_clusters': 9}; 0.10 s; 900.25; 0.19
+Birch{'n_clusters': 3, 'threshold': 0.2}; 0.09 s; 1222.96; 0.27
+Birch{'n_clusters': 3, 'threshold': 0.25}; 0.07 s; 851.15; 0.23
+Birch{'n_clusters': 3, 'threshold': 0.1}; 0.15 s; 1179.86; 0.23
 Birch{'n_clusters': 5, 'threshold': 0.1}; 0.13 s; 897.50; 0.20
