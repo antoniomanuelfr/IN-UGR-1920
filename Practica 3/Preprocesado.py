@@ -4,7 +4,6 @@ from sklearn import preprocessing
 from boruta import BorutaPy
 from sklearn.ensemble import RandomForestClassifier
 from imblearn.combine import SMOTETomek
-
 import matplotlib.pyplot as plt
 
 seed = 10
@@ -98,17 +97,29 @@ if __name__ == "__main__":
     X_sampled, y_sampled = sample_dataset(X, y)
     # Seleccion de caracteristicas
 
-    """
-    rf = RandomForestClassifier(n_jobs=-1, class_weight='balanced', max_depth=5)
-    feat_selector = BorutaPy(rf, max_iter=9, n_estimators=200, verbose=0, random_state=seed)
-    feat_selector.fit(X, y)
-    """
+
     data_frame_X_train = pd.DataFrame(data=X_sampled, columns=list(X_train.columns))
     data_frame_y_train = pd.DataFrame(data=y_sampled, columns=list(Y_train.columns))
     data_frame_X_test = pd.DataFrame(data=X_test_cat, columns=list(X_test.columns))
     # Printamos la info
     dataset_info(data_frame_X_train, data_frame_y_train, "sampled")
     # Exportamos a CSV
-    data_frame_X_train.to_csv("{}/X_train_procesado.csv".format(data_path))
-    data_frame_y_train.to_csv("{}/y_train_procesado.csv".format(data_path))
-    data_frame_X_test.to_csv("{}/X_test_procesado.csv".format(data_path))
+    data_frame_X_train.to_csv("{}/X_train_procesado.csv".format(data_path), index=False)
+    data_frame_y_train.to_csv("{}/y_train_procesado.csv".format(data_path), index=False)
+    data_frame_X_test.to_csv("{}/X_test_procesado.csv".format(data_path), index=False)
+
+    """
+    rf = RandomForestClassifier(n_jobs=-1, class_weight='balanced', max_depth=5)
+    feat_selector = BorutaPy(rf, max_iter=9, n_estimators=200, verbose=0, random_state=seed)
+    feat_selector.fit(X_sampled, y_sampled)
+    X_sampled = feat_selector.transform(X_sampled)
+    X_test_cat = feat_selector.transform(X_test_cat)
+
+    data_frame_X_train = pd.DataFrame(data=X_sampled, columns=list(X_train.columns))
+    data_frame_y_train = pd.DataFrame(data=y_sampled, columns=list(Y_train.columns))
+    data_frame_X_test = pd.DataFrame(data=X_test_cat, columns=list(X_test.columns))
+
+    data_frame_X_train.to_csv("{}/X_train_procesado_boruta.csv".format(data_path))
+    data_frame_y_train.to_csv("{}/y_train_procesado_boruta.csv".format(data_path))
+    data_frame_X_test.to_csv("{}/X_test_procesado_boruta.csv".format(data_path))
+    """
