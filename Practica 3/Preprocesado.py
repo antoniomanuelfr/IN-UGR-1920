@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import preprocessing
 from boruta import BorutaPy
 from sklearn.ensemble import RandomForestClassifier
-from imblearn.combine import SMOTETomek
+from imblearn.under_sampling import AllKNN
 import matplotlib.pyplot as plt
 
 seed = 10
@@ -67,8 +67,8 @@ def categorical_to_number(x_training, x_test, y_training):
 
 
 def sample_dataset(X_train, y_train):
-    smote_tomek = SMOTETomek(random_state=seed)
-    X_resampled, y_resampled = smote_tomek.fit_resample(X_train, y_train)
+    sampling_method = AllKNN(random_state=seed)
+    X_resampled, y_resampled = sampling_method.fit_resample(X_train, y_train)
     print("Shape del dataset original: {}. Shape del dataset procesado{} ".format(X_train.shape, X_resampled.shape))
     return X_resampled, y_resampled
 

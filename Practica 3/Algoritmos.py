@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
 
-    # '''
+    '''
     print("------ Random Forest...")
     rf = RandomForestClassifier(random_state=seed, n_jobs=2)
     params_rf = {'n_estimators': [20, 30, 50]}
@@ -60,9 +60,13 @@ if __name__ == "__main__":
     grid.fit(X_train.values, y_train.values.ravel())
     #lgbm, y_test_lgbm = validacion_cruzada(lgbm, X_train.values, y_train.values.ravel(), skf)
     # '''
+    lgbm = lgb.LGBMClassifier(objective='regression_l1',n_estimators=200,n_jobs=2)
+    #lgbm, y_test_lgbm = validacion_cruzada(lgbm,X_train,y_train,skf)
+#'''
 
-    # clf = xgbclf
-    clf = grid.best_estimator_
+    #clf = xgbclf
+    clf = lgbm
+    #clf = grid.best_estimator_
     clf = clf.fit(X_train.values, y_train.values.ravel())
     y_pred_tra = clf.predict(X_train.values)
     print("F1 score (tra): {:.4f}".format(f1_score(y_train.values, y_pred_tra, average='micro')))
