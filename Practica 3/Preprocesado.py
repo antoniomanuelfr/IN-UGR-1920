@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import preprocessing
 from boruta import BorutaPy
 from sklearn.ensemble import RandomForestClassifier
-from imblearn.under_sampling import AllKNN
+from imblearn.under_sampling import CondensedNearestNeighbour
 import matplotlib.pyplot as plt
 
 seed = 10
@@ -46,28 +46,35 @@ def dataset_info(X_train, y, name):
 
 
 def categorical_to_number(x_training, x_test, y_training):
-    mask = x_training.isnull()
-    X_train_tmp = x_training.fillna(9999)
-    X_train_tmp = X_train_tmp.astype(str).apply(preprocessing.LabelEncoder().fit_transform)
-    X_train_nan = X_train_tmp.where(~mask, x_training)
+    # Extreamos las categoricas
+    categorical_columns = list(x_training.select_dtypes('object').astype(str))
+    categorical_features = x_training[categorical_columns]
+    # Las eliminamos
+    x_training = x_training.drop(columns=categorical_columns)
+    # Aplicamos el label encoder
+    tra_cat_enc = categorical_features.apply(preprocessing.LabelEncoder().fit_transform)
+    # juntamos el conjunto de train
+    procesed_x_tra = pd.concat((x_training, tra_cat_enc), axis=1, join='outer', ignore_index=False, keys=None,
+                               levels=None, names=None, verify_integrity=False, copy=True)
 
-    mask = x_test.isnull()  # máscara para luego recuperar los NaN
-    X_test_tmp = x_test.fillna(9999)  # LabelEncoder no funciona con NaN, se asigna un valor no usado
+    # Extreamos las categoricas
+    categorical_columns = list(x_test.select_dtypes('object').astype(str))
+    categorical_features = x_test[categorical_columns]
+    # Las eliminamos
+    x_test = x_test.drop(columns=categorical_columns)
+    # Aplicamos el label encoder
+    test_cat_enc = categorical_features.apply(preprocessing.LabelEncoder().fit_transform)
+    # juntamos el conjunto de test
+    procesed_x_test = pd.concat((x_test, test_cat_enc), axis=1, join='outer', ignore_index=False, keys=None,
+                               levels=None, names=None, verify_integrity=False, copy=True)
 
-    X_test_tmp = X_test_tmp.astype(str).apply(
-        preprocessing.LabelEncoder().fit_transform)  # se convierten categóricas en numéricas
-
-    X_test_nan = X_test_tmp.where(~mask, x_test)  # se recuperan los NaN
-
-    X = X_train_nan
-    X_tst = X_test_nan
     y = np.ravel(y_training)
 
-    return X, X_tst, y
+    return procesed_x_tra,procesed_x_test, y
 
 
 def sample_dataset(X_train, y_train):
-    sampling_method = AllKNN(random_state=seed)
+    sampling_method = CondensedNearestNeighbour(random_state=seed)
     X_resampled, y_resampled = sampling_method.fit_resample(X_train, y_train)
     print("Shape del dataset original: {}. Shape del dataset procesado{} ".format(X_train.shape, X_resampled.shape))
     return X_resampled, y_resampled
@@ -80,26 +87,27 @@ if __name__ == "__main__":
     lectura de datos
     '''
     # los ficheros .csv se han preparado previamente para sustituir ,, y "Not known" por NaN (valores perdidos)
-    X_train = pd.read_csv('{}/nepal_earthquake_tra.csv'.format(data_path))
+    X_tra = pd.read_csv('{}/nepal_earthquake_tra.csv'.format(data_path))
     Y_train = pd.read_csv('{}/nepal_earthquake_labels.csv'.format(data_path))
-    X_test = pd.read_csv('{}/nepal_earthquake_tst.csv'.format(data_path))
+    X_tst = pd.read_csv('{}/nepal_earthquake_tst.csv'.format(data_path))
 
     # se quitan las columnas que no se usan
-    X_train.drop(labels=['building_id'], axis=1, inplace=True)
-    X_test.drop(labels=['building_id'], axis=1, inplace=True)
+    X_tra.drop(labels=['building_id'], axis=1, inplace=True)
+    X_tst.drop(labels=['building_id'], axis=1, inplace=True)
     Y_train.drop(labels=['building_id'], axis=1, inplace=True)
 
-    print ("Pasando categoricas a numericas")
-    X, X_test_cat, y = categorical_to_number(X_train, X_test, Y_train)
+    print("Pasando categoricas a numericas")
+    X, X_test_cat, y = categorical_to_number(X_tra, X_tst, Y_train)
     dataset_info(X, y, "original")
+    X_train = pd.DataFrame(data=preprocessing.normalize(X.values), columns=list(X_tra.columns))
+    X_test = pd.DataFrame(preprocessing.normalize(X_test_cat.values), columns=list(X_tst.columns))
     # Realizamos una tecnica de oversampling y despues una de undersampling
-    print("Aplicando SmoteTomek")
-    X_sampled, y_sampled = sample_dataset(X, y)
+    print("Aplicando sampling")
+    # X, y = sample_dataset(X, y)
     # Seleccion de caracteristicas
 
-
-    data_frame_X_train = pd.DataFrame(data=X_sampled, columns=list(X_train.columns))
-    data_frame_y_train = pd.DataFrame(data=y_sampled, columns=list(Y_train.columns))
+    data_frame_X_train = pd.DataFrame(data=X, columns=list(X_train.columns))
+    data_frame_y_train = pd.DataFrame(data=y, columns=list(Y_train.columns))
     data_frame_X_test = pd.DataFrame(data=X_test_cat, columns=list(X_test.columns))
     # Printamos la info
     dataset_info(data_frame_X_train, data_frame_y_train, "sampled")

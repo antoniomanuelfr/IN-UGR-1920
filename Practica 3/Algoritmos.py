@@ -7,11 +7,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
 from sklearn.metrics import f1_score
-
+import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
+from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn import preprocessing
-import xgboost as xgb
+import xgboost.sklearn as xgb
 import lightgbm as lgb
+
 
 data_path = "Datos"
 image_path = "Imagenes"
@@ -24,7 +27,6 @@ np.random.seed(seed)
 def validacion_cruzada(modelo, X, y, cv):
     y_test_all = []
     cnt = 0
-
 
     for train, test in cv.split(X, y):
         t = time.time()
@@ -51,22 +53,32 @@ if __name__ == "__main__":
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
 
     '''
-    print("------ Random Forest...")
-    rf = RandomForestClassifier(random_state=seed, n_jobs=2)
-    params_rf = {'n_estimators': [20, 30, 50]}
+    print("------ AdaBoost...")
+    clf = AdaBoostClassifier(random_state=seed)
+    params_rf = {'n_estimators': [1000,110,1200,1300]}
     
-    param_f1 = {'average': 'micro'}
-    grid = GridSearchCV(rf, params_rf, cv=5, n_jobs=2, scoring=make_scorer(f1_score, average='micro'), verbose = 4)
-    grid.fit(X_train.values, y_train.values.ravel())
-    #lgbm, y_test_lgbm = validacion_cruzada(lgbm, X_train.values, y_train.values.ravel(), skf)
     # '''
-    lgbm = lgb.LGBMClassifier(objective='regression_l1',n_estimators=200,n_jobs=2)
-    #lgbm, y_test_lgbm = validacion_cruzada(lgbm,X_train,y_train,skf)
-#'''
+    """
+    grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
+    grid.fit(X_train.values, y_train.values.ravel())
+    print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
+    #"""
 
-    #clf = xgbclf
-    clf = lgbm
-    #clf = grid.best_estimator_
+    #"""
+    print("------ XGBoost...")
+    clf =xgb.XGBClassifier(nthread=8)
+    params_rf = {'max_depth': [8, 10],'n_estimators': [100, 200, 300, 400] }
+    #"""
+    print ("Grid Search")
+    grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
+    grid.fit(X_train.values, y_train.values.ravel())
+    print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
+    # Creo un modelo con los parametros anteriores
+    print("Validacion cruzada")
+    # clf = AdaBoostClassifier(random_state=seed)
+    clf =xgb.XGBClassifier(nthread=8, **grid.best_params_)
+
+    validacion_cruzada(clf, X=X_train.values, y=y_train.values.ravel(), cv=skf)
     clf = clf.fit(X_train.values, y_train.values.ravel())
     y_pred_tra = clf.predict(X_train.values)
     print("F1 score (tra): {:.4f}".format(f1_score(y_train.values, y_pred_tra, average='micro')))
