@@ -13,7 +13,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn import preprocessing
 import xgboost.sklearn as xgb
-import lightgbm as lgb
+#import lightgbm as lgb
 
 
 data_path = "Datos"
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     #"""
     print("------ XGBoost...")
     clf =xgb.XGBClassifier(nthread=8)
-    params_rf = {'max_depth': [8, 10],'n_estimators': [100, 200, 300, 400] }
+    params_rf = {'max_depth':  [10],'n_estimators': [500, 510, 520, 530, 540, 550]}
     #"""
     print ("Grid Search")
     grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
