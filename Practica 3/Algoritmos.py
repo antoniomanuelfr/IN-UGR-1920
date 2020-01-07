@@ -67,16 +67,16 @@ if __name__ == "__main__":
     #"""
     print("------ XGBoost...")
     clf =xgb.XGBClassifier(n_estimators = 500,  max_depth = 10, nthread=-1)
-    #params_rf = {'booster':['gbtree', 'dart', 'gblinear'], 'max_depth':[10, 11]}
+    params_rf = {'booster':['gbtree', 'dart', 'gblinear'], 'max_depth':[10, 11]}
     #"""
     print ("Grid Search")
-    #grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
-    #grid.fit(X_train.values, y_train.values.ravel())
-    #print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
+    grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
+    grid.fit(X_train.values, y_train.values.ravel())
+    print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
     # Creo un modelo con los parametros anteriores
     print("Validacion cruzada")
     # clf = AdaBoostClassifier(random_state=seed)
-    #clf =xgb.XGBClassifier(nthread=8, **grid.best_params_)
+    clf =xgb.XGBClassifier(nthread=8, **grid.best_params_)
 
     #validacion_cruzada(clf, X=X_train.values, y=y_train.values.ravel(), cv=skf)
     clf = clf.fit(X_train.values, y_train.values.ravel())
