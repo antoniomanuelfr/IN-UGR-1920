@@ -103,7 +103,7 @@ if __name__ == "__main__":
     X_test = pd.DataFrame(preprocessing.normalize(X_test_cat.values), columns=list(X_tst.columns))
     # Realizamos una tecnica de oversampling y despues una de undersampling
     print("Aplicando sampling")
-    # X, y = sample_dataset(X, y)
+    X, y = sample_dataset(X, y)
     # Seleccion de caracteristicas
 
     data_frame_X_train = pd.DataFrame(data=X, columns=list(X_train.columns))
@@ -112,9 +112,9 @@ if __name__ == "__main__":
     # Printamos la info
     dataset_info(data_frame_X_train, data_frame_y_train, "sampled")
     # Exportamos a CSV
-    data_frame_X_train.to_csv("{}/X_train_procesado.csv".format(data_path), index=False)
-    data_frame_y_train.to_csv("{}/y_train_procesado.csv".format(data_path), index=False)
-    data_frame_X_test.to_csv("{}/X_test_procesado.csv".format(data_path), index=False)
+    data_frame_X_train.to_csv("{}/X_train_procesado_sampled.csv".format(data_path), index=False)
+    data_frame_y_train.to_csv("{}/y_train_procesado_sampled.csv".format(data_path), index=False)
+    data_frame_X_test.to_csv("{}/X_test_procesado_sampled.csv".format(data_path), index=False)
 
     """
     rf = RandomForestClassifier(n_jobs=-1, class_weight='balanced', max_depth=5)

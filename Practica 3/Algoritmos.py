@@ -46,9 +46,9 @@ def validacion_cruzada(modelo, X, y, cv):
 if __name__ == "__main__":
     # Lectura de datos ya procesados
 
-    X_train = pd.read_csv("{}/X_train_procesado.csv".format(data_path))
-    y_train = pd.read_csv("{}/y_train_procesado.csv".format(data_path))
-    X_test = pd.read_csv("{}/X_test_procesado.csv".format(data_path))
+    X_train = pd.read_csv("{}/X_train_procesado_sampled.csv".format(data_path))
+    y_train = pd.read_csv("{}/y_train_procesado_sampled.csv".format(data_path))
+    X_test = pd.read_csv("{}/X_test_procesado_sampled.csv".format(data_path))
 
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
 
@@ -66,19 +66,19 @@ if __name__ == "__main__":
 
     #"""
     print("------ XGBoost...")
-    clf =xgb.XGBClassifier(nthread=8)
-    params_rf = {'max_depth':  [10],'n_estimators': [500, 510, 520, 530, 540, 550]}
+    clf =xgb.XGBClassifier(n_estimators = 500,  max_depth = 10, nthread=-1)
+    #params_rf = {'booster':['gbtree', 'dart', 'gblinear'], 'max_depth':[10, 11]}
     #"""
     print ("Grid Search")
-    grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
-    grid.fit(X_train.values, y_train.values.ravel())
-    print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
+    #grid = GridSearchCV(clf, params_rf, cv=3, n_jobs=-1, scoring=make_scorer(f1_score, average='micro'), verbose=4)
+    #grid.fit(X_train.values, y_train.values.ravel())
+    #print("Los mejores parametros encontrados son: {}".format(grid.best_params_))
     # Creo un modelo con los parametros anteriores
     print("Validacion cruzada")
     # clf = AdaBoostClassifier(random_state=seed)
-    clf =xgb.XGBClassifier(nthread=8, **grid.best_params_)
+    #clf =xgb.XGBClassifier(nthread=8, **grid.best_params_)
 
-    validacion_cruzada(clf, X=X_train.values, y=y_train.values.ravel(), cv=skf)
+    #validacion_cruzada(clf, X=X_train.values, y=y_train.values.ravel(), cv=skf)
     clf = clf.fit(X_train.values, y_train.values.ravel())
     y_pred_tra = clf.predict(X_train.values)
     print("F1 score (tra): {:.4f}".format(f1_score(y_train.values, y_pred_tra, average='micro')))
@@ -86,4 +86,4 @@ if __name__ == "__main__":
 
     df_submission = pd.read_csv('{}/nepal_earthquake_submission_format.csv'.format(submission_path))
     df_submission['damage_grade'] = y_pred_tst
-    df_submission.to_csv("{}/submission.csv".format(submission_path), index=False)
+    df_submission.to_csv("{}/submission_sampled.csv".format(submission_path), index=False)
